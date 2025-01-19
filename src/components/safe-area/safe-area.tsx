@@ -8,7 +8,7 @@ const classPrefix = 'adm-safe-area'
 
 export type SafeAreaProps = {
   position: 'top' | 'bottom'
-} & NativeProps
+} & NativeProps<'--multiple'>
 
 export const SafeArea: FC<SafeAreaProps> = props => {
   return withNativeProps(

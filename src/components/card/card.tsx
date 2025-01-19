@@ -17,7 +17,15 @@ export type CardProps = {
   onBodyClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onHeaderClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   children?: ReactNode
-} & NativeProps
+} &
+  NativeProps<
+    | '--adm-card-border-radius'
+    | '--adm-card-padding-inline'
+    | '--adm-card-header-border-width'
+    | '--adm-card-header-border-color'
+    | '--adm-card-header-padding-block'
+    | '--adm-card-body-padding-block'
+  >
 
 export const Card: FC<CardProps> = props => {
   const renderHeader = () => {
