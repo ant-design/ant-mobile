@@ -75,9 +75,7 @@ export const ItemChildrenWrap: FC<DropdownItemChildrenWrapProps> = props => {
     props.forceRender,
     props.destroyOnClose
   )
-  const cls = classNames(`${classPrefix}-content`, {
-    [`${classPrefix}-content-hidden`]: !active,
-  })
+  const cls = classNames(`${classPrefix}-content`)
 
   return shouldRender ? (
     <div className={cls} onClick={props.onClick}>
