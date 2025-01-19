@@ -17,7 +17,8 @@ describe('Ellipsis', () => {
           const that = this as HTMLElement
           const charLen = (that.textContent || '').length || 1
           const rows = Math.ceil(charLen / 30)
-          return rows * lineHeight
+          const styleLineHeight = parseFloat(that.style.lineHeight)
+          return Math.round(rows * (styleLineHeight || lineHeight))
         },
       },
     })
@@ -131,5 +132,31 @@ describe('Ellipsis', () => {
     expect(await findByText('expand')).toBeVisible()
     fireEvent.click(getByText('expand'))
     expect(getByText('collapse')).toBeInTheDocument()
+  })
+
+  test('non-integer line height', () => {
+    const rows = 2
+    const lineHeight = '16.4px'
+
+    const { getByTestId } = render(
+      <React.Fragment>
+        <Ellipsis
+          rows={rows}
+          style={{ lineHeight }}
+          content={content}
+          data-testid='ellipsis'
+        />
+        <div style={{ lineHeight }} data-testid='maxheight'>
+          {content}
+        </div>
+      </React.Fragment>
+    )
+
+    const { offsetHeight } = getByTestId('ellipsis') || {}
+    const { offsetHeight: maxheight } = getByTestId('maxheight') || {}
+    const rowsHeight = Math.round(parseFloat(lineHeight) * rows)
+    const expectHeight = Math.min(rowsHeight, maxheight)
+
+    expect(offsetHeight).toBe(expectHeight)
   })
 })
