@@ -1,15 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import classNames from 'classnames'
 import type {
-  ReactNode,
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   MouseEventHandler,
+  ReactNode,
 } from 'react'
-import classNames from 'classnames'
-import DotLoading from '../dot-loading'
-import { mergeProps } from '../../utils/with-default-props'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { NativeProps, withNativeProps } from '../../utils/native-props'
 import { isPromise } from '../../utils/validate'
+import { mergeProps } from '../../utils/with-default-props'
+import DotLoading from '../dot-loading'
 
 const classPrefix = `adm-button`
 
@@ -19,7 +19,7 @@ type NativeButtonProps = DetailedHTMLProps<
 >
 
 export type ButtonProps = {
-  color?: 'default' | 'primary' | 'success' | 'warning' | 'danger'
+  color?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'link'
   fill?: 'solid' | 'outline' | 'none'
   size?: 'mini' | 'small' | 'middle' | 'large'
   block?: boolean

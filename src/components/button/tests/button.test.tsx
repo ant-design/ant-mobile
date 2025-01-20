@@ -1,15 +1,15 @@
 import React, { createRef } from 'react'
 import {
-  render,
-  testA11y,
-  screen,
-  fireEvent,
-  sleep,
-  waitFor,
   act,
+  fireEvent,
+  render,
+  screen,
+  sleep,
+  testA11y,
+  waitFor,
 } from 'testing'
-import Button from '../'
 import type { ButtonRef } from '..'
+import Button from '../'
 
 const classPrefix = `adm-button`
 
@@ -25,6 +25,7 @@ describe('Button', () => {
         <Button color='success'>Success</Button>
         <Button color='danger'>Danger</Button>
         <Button color='warning'>Warning</Button>
+        <Button color='link'>Link</Button>
       </>
     )
     expect(getByText('Primary').closest('button')).toHaveClass(
@@ -38,6 +39,9 @@ describe('Button', () => {
     )
     expect(getByText('Warning').closest('button')).toHaveClass(
       `${classPrefix}-warning`
+    )
+    expect(getByText('Link').closest('button')).toHaveClass(
+      `${classPrefix}-link`
     )
   })
 

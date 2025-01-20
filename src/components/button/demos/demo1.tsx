@@ -1,6 +1,6 @@
-import React from 'react'
 import { Button, Space } from 'antd-mobile'
 import { DemoBlock } from 'demos'
+import React from 'react'
 
 export default () => {
   return (
@@ -55,6 +55,7 @@ export default () => {
           <Button color='success'>Success</Button>
           <Button color='danger'>Danger</Button>
           <Button color='warning'>Warning</Button>
+          <Button color='link'>Link</Button>
         </Space>
       </DemoBlock>
     </>
