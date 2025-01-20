@@ -1,11 +1,11 @@
 import { canUseDom } from './can-use-dom'
-import { isDev } from './is-dev'
 import { devError } from './dev-log'
+import { isDev } from './is-dev'
 
 let tenPxTester: HTMLDivElement | null = null
 let tester: HTMLDivElement | null = null
 
-if (canUseDom) {
+if (canUseDom && document.body) {
   tenPxTester = document.createElement('div')
   tenPxTester.className = 'adm-px-tester'
   tenPxTester.style.setProperty('--size', '10')
