@@ -57,7 +57,7 @@ High-performance form controls with built-in data field management. Including da
 | setFieldValue | Set the value by the field name | `(name: NamePath, value: any) => void` |
 | setFieldsValue | Set fields value(Will directly pass to form store. If you do not want to modify passed object, please clone first) | `(values) => void` |
 | submit | Submit the form. It's same as click `submit` button | `() => void` |
-| validateFields | Validate fields | `(nameList?: NamePath[]) => Promise` |
+| validateFields | Validate fields,`recursive` is set to recursively check all included paths | `(nameList?: NamePath[], config?: {recursive: boolean}) => Promise` |
 
 ### validateMessages
 
