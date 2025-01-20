@@ -79,13 +79,17 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((p, ref) => {
   useImperativeHandle(
     ref,
     () => ({
-      show: () => setVisible(true),
+      show: () => {
+        stateRef.current.isClickShow = true
+        setVisible(true)
+      },
       hide: () => setVisible(false),
       visible,
     }),
     [visible]
   )
 
+  const stateRef = useRef({ isClickShow: false })
   const targetRef = useRef<Wrapper>(null)
   const floatingRef = useRef<HTMLDivElement>(null)
   const arrowRef = useRef<HTMLDivElement>(null)
@@ -196,6 +200,10 @@ export const Popover = forwardRef<PopoverRef, PopoverProps>((p, ref) => {
   useClickAway(
     () => {
       if (!props.trigger) return
+      if (stateRef.current.isClickShow) {
+        stateRef.current.isClickShow = false
+        return
+      }
       setVisible(false)
     },
     [() => targetRef.current?.element, floatingRef],
