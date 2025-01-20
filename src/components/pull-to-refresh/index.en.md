@@ -45,6 +45,12 @@ type PullStatus = 'pulling' | 'canRelease' | 'refreshing' | 'complete'
 | renderText | Customize the pulling content according to the pulling status | `(status: PullStatus) => ReactNode` | - |
 | threshold | How far to pull down to trigger refresh, unit is px | `number` | `60` |
 
+### Ref
+
+| Name    | Description                            | Type       |
+| ------- | -------------------------------------- | ---------- |
+| refresh | Manually trigger the drop-down refresh | `()=>void` |
+
 ## FAQ
 
 ### Does it support pull up to load more?

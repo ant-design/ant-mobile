@@ -45,6 +45,12 @@ type PullStatus = 'pulling' | 'canRelease' | 'refreshing' | 'complete'
 | renderText | 根据下拉状态，自定义下拉提示文案 | `(status: PullStatus) => ReactNode` | - |
 | threshold | 触发刷新需要下拉多少距离，单位为 px | `number` | `60` |
 
+### Ref
+
+| 属性    | 说明             | 类型       |
+| ------- | ---------------- | ---------- |
+| refresh | 手动触发下拉刷新 | `()=>void` |
+
 ## 常见问题
 
 ### 是否支持上拉加载更多？

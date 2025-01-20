@@ -1,14 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import type { FC, ReactNode } from 'react'
-import { mergeProps } from '../../utils/with-default-props'
 import { animated, useSpring } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
-import { getScrollParent } from '../../utils/get-scroll-parent'
-import { supportsPassive } from '../../utils/supports-passive'
+import type { ForwardRefRenderFunction, ReactNode } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { convertPx } from '../../utils/convert-px'
+import { getScrollParent } from '../../utils/get-scroll-parent'
 import { rubberbandIfOutOfBounds } from '../../utils/rubberband'
-import { useConfig } from '../config-provider'
 import { sleep } from '../../utils/sleep'
+import { supportsPassive } from '../../utils/supports-passive'
+import { mergeProps } from '../../utils/with-default-props'
+import { useConfig } from '../config-provider'
 
 const classPrefix = `adm-pull-to-refresh`
 
@@ -28,6 +34,10 @@ export type PullToRefreshProps = {
   children?: ReactNode
 }
 
+export type PullToRefreshRef = {
+  refresh: () => void
+}
+
 export const defaultProps = {
   pullingText: '下拉刷新',
   canReleaseText: '释放立即刷新',
@@ -38,7 +48,10 @@ export const defaultProps = {
   onRefresh: () => {},
 }
 
-export const PullToRefresh: FC<PullToRefreshProps> = p => {
+export const PullToRefresh$: ForwardRefRenderFunction<
+  PullToRefreshRef,
+  PullToRefreshProps
+> = (p, ref) => {
   const { locale } = useConfig()
   const props = mergeProps(
     defaultProps,
@@ -103,6 +116,15 @@ export const PullToRefresh: FC<PullToRefreshProps> = p => {
     }
     reset()
   }
+
+  useImperativeHandle(ref, () => {
+    return {
+      refresh: () => {
+        if (status === 'refreshing' || status === 'complete') return
+        doRefresh()
+      },
+    }
+  })
 
   useDrag(
     state => {
@@ -191,3 +213,5 @@ export const PullToRefresh: FC<PullToRefreshProps> = p => {
     </animated.div>
   )
 }
+
+export const PullToRefresh = forwardRef(PullToRefresh$)
