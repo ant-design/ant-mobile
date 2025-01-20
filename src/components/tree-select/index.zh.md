@@ -16,7 +16,7 @@
 
 ```typescript | pure
 type TreeSelectOption = {
-  label: string
+  label: string | JSX.Element
   value: string
   children?: TreeSelectOption[]
 }
