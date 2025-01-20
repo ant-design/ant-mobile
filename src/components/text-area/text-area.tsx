@@ -139,6 +139,13 @@ export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(
 
     const compositingRef = useRef(false)
 
+    // https://github.com/ant-design/ant-design-mobile/issues/6391
+    const maxLengthDataRef = useRef({
+      isMaxLength: false,
+      cacheSelectionEnd: 0,
+      cacheValueLength: 0,
+    })
+
     let count
     const valueLength = runes(value).length
     if (typeof showCount === 'function') {
@@ -174,21 +181,41 @@ export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(
           placeholder={props.placeholder}
           onChange={e => {
             let v = e.target.value
+            const configValue = runes(v)
             if (maxLength && !compositingRef.current) {
-              v = runes(v).slice(0, maxLength).join('')
+              if (
+                maxLengthDataRef.current.isMaxLength &&
+                configValue.length > maxLength
+              )
+                return
+              v = configValue.slice(0, maxLength).join('')
+              maxLengthDataRef.current.isMaxLength =
+                configValue.length >= maxLength
             }
             setValue(v)
           }}
           id={props.id}
           onCompositionStart={e => {
             compositingRef.current = true
+            const { selectionEnd, value } = e.target as HTMLTextAreaElement
+            maxLengthDataRef.current.cacheSelectionEnd = selectionEnd
+            maxLengthDataRef.current.cacheValueLength = value.length
             props.onCompositionStart?.(e)
           }}
           onCompositionEnd={e => {
             compositingRef.current = false
-            if (maxLength) {
-              const v = (e.target as HTMLTextAreaElement).value
-              setValue(runes(v).slice(0, maxLength).join(''))
+            const v = (e.target as HTMLTextAreaElement).value
+            const configValue = runes(v)
+            if (maxLength && configValue.length > maxLength) {
+              const { cacheSelectionEnd, cacheValueLength } =
+                maxLengthDataRef.current
+              configValue.splice(
+                cacheSelectionEnd + maxLength - cacheValueLength,
+                configValue.length - maxLength
+              )
+              setValue(configValue.join(''))
+            } else {
+              setValue(configValue.slice(0, maxLength).join(''))
             }
             props.onCompositionEnd?.(e)
           }}
