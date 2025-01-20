@@ -57,7 +57,7 @@
 | setFieldValue | 设置对应字段名的值 | `(name: NamePath, value: any) => void` |
 | setFieldsValue | 设置表单的值（该值将直接传入 form store 中。如果你不希望传入对象被修改，请克隆后传入） | `(values) => void` |
 | submit | 提交表单，与点击 `submit` 按钮效果相同 | `() => void` |
-| validateFields | 触发表单验证 | `(nameList?: NamePath[]) => Promise` |
+| validateFields | 触发表单验证，设置 recursive 时会递归校验所有包含的路径 | `(nameList?: NamePath[], config?: {recursive: boolean}) => Promise` |
 
 ### validateMessages
 
