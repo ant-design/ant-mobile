@@ -66,6 +66,11 @@
       -1px 2px 2px 0 rgba(0, 0, 0, 0.1);
   }
 
+  &-handle-rtl {
+    left: auto;
+    right: var(--border-width);
+  }
+
   &-inner {
     position: relative;
     z-index: 1;
@@ -89,6 +94,11 @@
     }
     .@{class-prefix-switch}-handle {
       left: calc(100% - (var(--height) - var(--border-width)));
+    }
+
+    .@{class-prefix-switch}-handle-rtl {
+      left: auto;
+      right: calc(100% - (var(--height) - var(--border-width)));
     }
 
     .@{class-prefix-switch}-inner {

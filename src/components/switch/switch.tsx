@@ -30,7 +30,7 @@ export const Switch: FC<SwitchProps> = p => {
   const props = mergeProps(defaultProps, p)
   const disabled = props.disabled || props.loading || false
   const [changing, setChanging] = useState(false)
-  const { locale } = useConfig()
+  const { locale, direction } = useConfig()
 
   const [checked, setChecked] = usePropsValue({
     value: props.checked,
@@ -80,7 +80,11 @@ export const Switch: FC<SwitchProps> = p => {
       aria-disabled={disabled}
     >
       <div className={`${classPrefix}-checkbox`}>
-        <div className={`${classPrefix}-handle`}>
+        <div
+          className={classNames(`${classPrefix}-handle`, {
+            [`${classPrefix}-handle-rtl`]: direction === 'rtl',
+          })}
+        >
           {(props.loading || changing) && (
             <SpinIcon className={`${classPrefix}-spin-icon`} />
           )}

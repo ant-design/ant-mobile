@@ -3,6 +3,7 @@ import { Locale } from '../../locales/base'
 import zhCN from '../../locales/zh-CN'
 
 type Config = {
+  direction?: 'ltr' | 'rtl'
   locale: Locale
   checkList?: {
     activeIcon?: ReactNode

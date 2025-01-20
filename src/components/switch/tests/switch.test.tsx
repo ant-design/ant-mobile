@@ -9,6 +9,8 @@ import {
   act,
 } from 'testing'
 import Switch from '..'
+import ConfigProvider from '../../config-provider'
+import zhCN from '../../../locales/zh-CN'
 
 const classPrefix = `adm-switch`
 
@@ -20,6 +22,17 @@ describe('Switch', () => {
   test('renders with disabled', () => {
     render(<Switch disabled />)
     expect(screen.getByRole('switch')).toHaveClass(`${classPrefix}-disabled`)
+  })
+
+  test('renders with rtl mode', () => {
+    render(
+      <ConfigProvider locale={zhCN} direction='rtl'>
+        <Switch />
+      </ConfigProvider>
+    )
+    expect(
+      screen.getByRole('switch').querySelector(`.${classPrefix}-handle-rtl`)
+    ).not.toBeNull()
   })
 
   test('controlled mode', async () => {
