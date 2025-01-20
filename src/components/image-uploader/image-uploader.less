@@ -3,12 +3,14 @@
 .@{class-prefix-image-uploader} {
   --cell-size: 80px;
   --gap: 12px;
+  --gap-horizontal: var(--gap);
+  --gap-vertical: var(--gap);
   ---gap: var(--gap);
-  ---gap-horizontal: var(--gap-horizontal, var(--gap));
-  ---gap-vertical: var(--gap-vertical, var(--gap));
+  ---gap-horizontal: var(--gap-horizontal);
+  ---gap-vertical: var(--gap-vertical);
 
-  &-grid,
-  &-space {
+  &-grid.adm-grid,
+  &-space.adm-space {
     --gap: var(---gap);
     --gap-horizontal: var(---gap-horizontal);
     --gap-vertical: var(---gap-vertical);
