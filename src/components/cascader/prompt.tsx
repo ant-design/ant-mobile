@@ -7,7 +7,7 @@ import type { CascaderProps, CascaderValue } from './index'
 export function prompt(
   props: Omit<CascaderProps, 'value' | 'visible' | 'children'>
 ) {
-  return new Promise<CascaderValue[] | null>(resolve => {
+  return new Promise<CascaderValue[] | null | any>(resolve => {
     const Wrapper: FC = () => {
       const [visible, setVisible] = useState(false)
       useEffect(() => {

@@ -22,6 +22,13 @@ export type CheckListProps = Pick<ListProps, 'mode' | 'style'> & {
   disabled?: boolean
   readOnly?: boolean
   children?: ReactNode
+  activeSetPathMiddleware: {
+    activeIconSetPath: any
+    value?: any
+    event?: any
+    setPath: any
+    index: any
+  }
 } & NativeProps
 
 const defaultProps = {
@@ -38,7 +45,7 @@ export const CheckList: FC<CheckListProps> = props => {
 
   function check(val: CheckListValue) {
     if (mergedProps.multiple) {
-      setValue([...value, val])
+      setValue([...(value as CheckListValue[]), val])
     } else {
       setValue([val])
     }
@@ -48,7 +55,8 @@ export const CheckList: FC<CheckListProps> = props => {
     setValue(value.filter(item => item !== val))
   }
 
-  const { activeIcon, extra, disabled, readOnly } = mergedProps
+  const { activeIcon, extra, disabled, readOnly, activeSetPathMiddleware } =
+    mergedProps
 
   return (
     <CheckListContext.Provider
@@ -60,6 +68,7 @@ export const CheckList: FC<CheckListProps> = props => {
         extra,
         disabled,
         readOnly,
+        activeSetPathMiddleware,
       }}
     >
       {withNativeProps(

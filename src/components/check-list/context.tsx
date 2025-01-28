@@ -10,4 +10,11 @@ export const CheckListContext = createContext<{
   extra?: (active: boolean) => ReactNode
   disabled?: boolean
   readOnly?: boolean
+  activeSetPathMiddleware: {
+    activeIconSetPath: any
+    value?: any
+    event?: any
+    setPath: any
+    index: any
+  }
 } | null>(null)

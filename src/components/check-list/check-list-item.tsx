@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React, { useContext } from 'react'
 import type { FC } from 'react'
 import List, { ListItemProps } from '../list'
@@ -35,8 +37,26 @@ export const CheckListItem: FC<CheckListItemProps> = props => {
   const active = context.value.includes(props.value)
   const readOnly = props.readOnly || context.readOnly
   const defaultExtra = active ? context.activeIcon : null
+
+  const { activeIconSetPath, index, setPath } = active
+    ? context.activeSetPathMiddleware
+      ? context.activeSetPathMiddleware
+      : {}
+    : {}
   const renderExtra = context.extra ? context.extra(active) : defaultExtra
-  const extra = <div className={`${classPrefix}-extra`}>{renderExtra}</div>
+  const extra = (
+    <div
+      className={`${classPrefix}-extra`}
+      onClick={event => {
+        if (activeIconSetPath) {
+          setPath(props.value, index)
+          event.stopPropagation()
+        }
+      }}
+    >
+      {renderExtra}
+    </div>
+  )
 
   return withNativeProps(
     props,

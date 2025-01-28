@@ -34,6 +34,7 @@ type CascaderValueExtend = {
 
 | Name | Description | Type | Default |
 | --- | --- | --- | --- |
+| multiple | Whether to support selecting multiple options | `boolean` | false |
 | activeIcon | The icon displayed when selected | `ReactNode` | - |
 | cancelText | Text of the cancel button | `ReactNode` | `'取消'` |
 | children | Render function of the selected options | `(items: CascaderOption[], actions: CascaderActions) => ReactNode` | - |

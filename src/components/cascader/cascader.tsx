@@ -19,6 +19,8 @@ import { useConfig } from '../config-provider'
 import { useCascaderValueExtend } from '../cascader-view/use-cascader-value-extend'
 import { useFieldNames } from '../../hooks'
 import type { FieldNamesType } from '../../hooks'
+import { cloneDeep } from 'lodash'
+import { CheckListValue } from '../check-list'
 
 const classPrefix = `adm-cascader`
 
@@ -29,13 +31,64 @@ export type CascaderActions = {
 }
 export type CascaderRef = CascaderActions
 
+/**
+ * @description 二维数组转化成树
+ */
+function generatePaths(options: CascaderOption[], data: CheckListValue[][]) {
+  const result: string[][] = []
+  function helper(
+    currentOptions: any[],
+    currentData: string | any[],
+    path: string | any[]
+  ) {
+    if (currentData.length === 0) {
+      if (Array.isArray(path)) {
+        result.push(path)
+        return
+      }
+    }
+
+    const currentLevel = currentData[0]
+    const remainingData = currentData.slice(1)
+
+    let isFinish = true
+    currentLevel.forEach((value: any) => {
+      const option = currentOptions.find(
+        (opt: { value: any }) => opt.value === value
+      )
+      if (option) {
+        isFinish = false
+        helper(option.children || [], remainingData, path.concat(option.value))
+      }
+    })
+
+    if (isFinish) {
+      if (Array.isArray(path)) {
+        result.push(path)
+        return
+      }
+    }
+  }
+
+  helper(options, data, [])
+  return result
+}
+
 export type CascaderProps = {
+  activeIconSetPath?: boolean
   options: CascaderOption[]
-  value?: CascaderValue[]
+  multiple?: boolean
+  value?: CascaderValue[] | CascaderValue[][]
   defaultValue?: CascaderValue[]
   placeholder?: string
-  onSelect?: (value: CascaderValue[], extend: CascaderValueExtend) => void
-  onConfirm?: (value: CascaderValue[], extend: CascaderValueExtend) => void
+  onSelect?: (
+    value: CascaderValue[] | CascaderValue[][],
+    extend: CascaderValueExtend
+  ) => void
+  onConfirm?: (
+    value: CascaderValue[] | CascaderValue[][],
+    extend: CascaderValueExtend
+  ) => void
   onCancel?: () => void
   onClose?: () => void
   visible?: boolean
@@ -66,6 +119,23 @@ const defaultProps = {
   defaultValue: [],
   destroyOnClose: true,
   forceRender: false,
+}
+
+/**
+ * @description 树转化成二维数组
+ */
+const dataPreview = (data: Array<CheckListValue[]>) => {
+  const temp: any[] = []
+  cloneDeep(data).forEach(item => {
+    item.forEach((e: any, index: number) => {
+      if (!temp[index]) {
+        temp[index] = [e]
+      } else {
+        temp[index].push(e)
+      }
+    })
+  })
+  return temp
 }
 
 export const Cascader = forwardRef<CascaderRef, CascaderProps>((p, ref) => {
@@ -107,7 +177,24 @@ export const Cascader = forwardRef<CascaderRef, CascaderProps>((p, ref) => {
   const [value, setValue] = usePropsValue({
     ...props,
     onChange: val => {
-      props.onConfirm?.(val, generateValueExtend(val))
+      if (props.multiple) {
+        const hash: Record<string, boolean> = {}
+        let result = generatePaths(
+          props.options,
+          val as Array<CheckListValue[]>
+        )
+        result = result.filter(item => {
+          if (hash[JSON.stringify(item)]) {
+            return false
+          } else {
+            hash[JSON.stringify(item)] = true
+            return true
+          }
+        })
+        props.onConfirm?.(result, {} as any)
+      } else {
+        props.onConfirm?.(val, generateValueExtend(val as CheckListValue[]))
+      }
     },
   })
 
@@ -117,11 +204,23 @@ export const Cascader = forwardRef<CascaderRef, CascaderProps>((p, ref) => {
     childrenName,
   })
 
-  const [innerValue, setInnerValue] = useState<CascaderValue[]>(value)
+  let valueTemp
+  if (props.multiple) {
+    valueTemp = dataPreview(value as Array<CheckListValue[]>)
+  } else {
+    valueTemp = value as CascaderValue[]
+  }
+  const [innerValue, setInnerValue] = useState<
+    CascaderValue[] | CascaderValue[][]
+  >(valueTemp)
 
   useEffect(() => {
     if (!visible) {
-      setInnerValue(value)
+      if (props.multiple) {
+        setInnerValue(dataPreview(value as Array<CheckListValue[]>))
+      } else {
+        setInnerValue(value)
+      }
     }
   }, [visible, value])
 
@@ -187,7 +286,10 @@ export const Cascader = forwardRef<CascaderRef, CascaderProps>((p, ref) => {
   return (
     <>
       {popupElement}
-      {props.children?.(generateValueExtend(value).items, actions)}
+      {props.children?.(
+        generateValueExtend(value as CheckListValue[]).items,
+        actions
+      )}
     </>
   )
 })
