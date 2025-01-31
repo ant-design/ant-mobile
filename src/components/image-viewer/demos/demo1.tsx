@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ImageViewer, Button } from 'antd-mobile'
 import { DemoBlock } from 'demos'
-import { demoImage, demoImages } from './images'
+import { demoImage, demoImages, facImages } from './images'
 import styles from './demo1.less'
 
 // 单张图片预览
@@ -50,6 +50,38 @@ const Multi = () => {
         onClose={() => {
           setVisible(false)
         }}
+      />
+    </>
+  )
+}
+
+// 自定义图片背景色
+const ColorfulMulti = () => {
+  const [visible, setVisible] = useState(false)
+  const [index, setIndex] = useState(1)
+  const colors = [
+    'rgba(164,255,164,.7)',
+    'rgba(255,204,0,.7)',
+    'rgba(186,114,232,.7)',
+  ]
+  return (
+    <>
+      <Button
+        onClick={() => {
+          setVisible(true)
+        }}
+      >
+        显示图片
+      </Button>
+      <ImageViewer.Multi
+        images={facImages}
+        color={colors[index]}
+        visible={visible}
+        defaultIndex={1}
+        onClose={() => {
+          setVisible(false)
+        }}
+        onIndexChange={setIndex}
       />
     </>
   )
@@ -104,6 +136,10 @@ export default () => {
 
       <DemoBlock title='多张图片预览'>
         <Multi />
+      </DemoBlock>
+
+      <DemoBlock title='自定义图片背景色'>
+        <ColorfulMulti />
       </DemoBlock>
 
       <DemoBlock title='指令式调用'>

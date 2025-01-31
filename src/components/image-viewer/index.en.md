@@ -22,6 +22,7 @@ You need to click on the picture to view the details and use it with the thumbna
 | onClose | Triggered when it is closed | `() => void` | - |
 | renderFooter | Render extra content on footer | `(image: string) => ReactNode` | - |
 | visible | Whether to show or hide | `boolean` | `false` |
+| color | mask background color | `'black' \| 'white' \| string` | `'black'` |
 
 ## ImageViewer.Multi
 

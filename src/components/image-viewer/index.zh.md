@@ -22,6 +22,7 @@
 | onClose | 关闭时触发 | `() => void` | - |
 | renderFooter | 渲染底部额外内容 | `(image: string) => ReactNode` | - |
 | visible | 是否显示 | `boolean` | `false` |
+| color | 背景蒙层的颜色 | `'black' \| 'white' \| string` | `'black'` |
 
 ## ImageViewer.Multi
 
