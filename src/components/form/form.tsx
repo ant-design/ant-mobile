@@ -34,20 +34,7 @@ export type FormInstance = Pick<
   | 'validateFields'
 >
 
-export type FormProps = Pick<
-  RcFormProps,
-  | 'form'
-  | 'initialValues'
-  | 'name'
-  | 'preserve'
-  | 'validateMessages'
-  | 'validateTrigger'
-  | 'onFieldsChange'
-  | 'onFinish'
-  | 'onFinishFailed'
-  | 'onValuesChange'
-  | 'children'
-> &
+export type FormProps = RcFormProps &
   NativeProps<
     '--border-inner' | '--border-top' | '--border-bottom' | '--prefix-width'
   > &
